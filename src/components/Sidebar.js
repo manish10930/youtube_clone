@@ -8,7 +8,7 @@ function Sidebar() {
   if(!togleMenu) return null;
 
   return (
-    <div className='w-60 mt-16 h-[100vh]'>
+    <div  className=' mt-16 hidden sm:block '>
        <div className='p-5 shadow-lg'  >
        <ul>
             <Link to="/">
@@ -26,6 +26,32 @@ function Sidebar() {
         </ul>
         <h1 className='font-bold mt-2'>Subscription</h1>
         <ul>
+            <li>AajTak</li>
+            <li>Zee Tv</li>
+            <li>BB ki Vines</li>
+            <li>Zee News</li>
+        </ul>
+        <ul>
+            <li>AajTak</li>
+            <li>Zee Tv</li>
+            <li>BB ki Vines</li>
+            <li>Zee News</li>
+        </ul> <ul>
+            <li>AajTak</li>
+            <li>Zee Tv</li>
+            <li>BB ki Vines</li>
+            <li>Zee News</li>
+        </ul> <ul>
+            <li>AajTak</li>
+            <li>Zee Tv</li>
+            <li>BB ki Vines</li>
+            <li>Zee News</li>
+        </ul> <ul>
+            <li>AajTak</li>
+            <li>Zee Tv</li>
+            <li>BB ki Vines</li>
+            <li>Zee News</li>
+        </ul> <ul>
             <li>AajTak</li>
             <li>Zee Tv</li>
             <li>BB ki Vines</li>

@@ -1,8 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { closeMenu } from "../utils/appSlice";
 import { useSearchParams } from "react-router-dom";
+import CommentComponent from "./CommentComponent";
+
 
 function WatchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -65,36 +66,55 @@ function WatchPage() {
   };
 
   return (
-    <div className="w-[1000px]">
-      <div className="mt-20 container mx-auto ml-7 rounded-lg">
-        <iframe
-          className="rounded-2xl"
-          width="1000"
-          height="500"
-          src={`https://www.youtube.com/embed/${searchParams.get("v")}`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        ></iframe>
-        <div>
-          <h1 className="text-xl">{watchdata?.title}</h1>
-          <div className="flex justify-between mt-2 items-center">
-            <div className="flex items-center">
-              <img src={channelLogo} alt="Channel Logo" className="rounded-full w-10 h-10" />
-              <h2 className="ml-2 font-semibold " >{watchdata?.channelTitle}</h2>
-            </div>
-            <div>
-              <ul className="flex items-center cursor-pointer">
-                <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">dislike</li>
-                <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">share</li>
-                <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">like</li>
-                <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">download</li>
-              </ul>
+    <div className="flex justify-between w-full">
+      <div className="w-[1000px]">
+        <div className="mt-20 container mx-auto ml-7 rounded-lg">
+          <iframe
+            className="rounded-2xl"
+            width="1000"
+            height="500"
+            src={`https://www.youtube.com/embed/${searchParams.get("v")}`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
+          <div>
+            <h1 className="text-xl">{watchdata?.title}</h1>
+            <div className="flex justify-between mt-2 items-center">
+              <div className="flex items-center">
+                <img
+                  src={channelLogo}
+                  alt="Channel Logo"
+                  className="rounded-full w-10 h-10"
+                />
+                <h2 className="ml-2 font-semibold ">
+                  {watchdata?.channelTitle}
+                </h2>
+              </div>
+              <div>
+                <ul className="flex items-center cursor-pointer">
+                  <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">
+                    dislike
+                  </li>
+                  <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">
+                    share
+                  </li>
+                  <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">
+                    like
+                  </li>
+                  <li className="mx-2 bg-gray-300 p-2 rounded-xl shadow-lg">
+                    download
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
+          <CommentComponent />
         </div>
       </div>
+      {/* <div className="bg-red-600 flex flex-col w-[300px]  mt-[5.25]">
+      </div> */}
     </div>
   );
 }

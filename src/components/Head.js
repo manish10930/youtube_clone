@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toogleMenu } from "../utils/appSlice";
-import { Link } from "react-router-dom";
 import { YOUTUBE_SEARCH_API } from "../utils/constrants";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { cacheResults } from "../utils/searchSlice";
 
 function Head() {
+  const [searchtext, Setsearchtext] = useState("");
+  const seachcache = useSelector((store) => store.search);
   const [suggest, setSuggest] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showsuggestion,setShowsuggestion]=useState(false)
-  // const  navigate=useNavigate()
+  const [showsuggestion, setShowsuggestion] = useState(false);
   const dispatch = useDispatch();
-  // const handleclick=()=>{
-  //   navigate("/")
-  // }
   const handletoogle = () => {
     dispatch(toogleMenu());
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => getApi(), 200);
+    const timer = setTimeout(() => {
+      if (seachcache[searchQuery]) {
+        setSuggest(seachcache[searchQuery]);
+      } else {
+        getApi();
+      }
+    }, 200);
 
     return () => {
       clearTimeout(timer);
@@ -26,12 +31,17 @@ function Head() {
   }, [searchQuery]);
 
   const getApi = async () => {
-    console.log("searchQuery----->", searchQuery);
+    console.log("searchQuery api call----->", searchQuery);
     try {
       const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
       if (data.ok) {
         const json = await data.json();
         setSuggest(json[1]);
+        dispatch(
+          cacheResults({
+            [searchQuery]: json[1],
+          })
+        );
       } else {
         console.log("Error fetching data information");
       }
@@ -39,7 +49,11 @@ function Head() {
       console.error("Error fetching video information", error);
     }
   };
-
+  const handleSearchResult = (text) => {
+    // console.log("hiiiii manish");
+    Setsearchtext(text)
+    console.log("searchtext is here",text)
+  };
   return (
     <>
       <div className="grid grid-flow-col p-5  shadow-lg fixed w-full bg-white ">
@@ -66,25 +80,28 @@ function Head() {
               placeholder="Search your here...."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={()=>setShowsuggestion(true)}
-              onBlur={()=>setShowsuggestion(false)}
+              onFocus={() => setShowsuggestion(true)}
+              onBlur={() => setShowsuggestion(false)}
             />
             <button className="border border-gray-400 p-1 px-2 bg-gray-100 rounded-r-full ">
               Search
             </button>
           </div>
-         {
-          showsuggestion && (
-            <div className=" fixed top-15 left-[40%] py-2 px-2 sm:w-[18rem] flex justify-start rounded-md bg-white mx-auto">
-            <ul className="w-full text-left">
-              {
-                suggest.map((item, index) => <li key={index} className="hover:bg-gray-300 m- p-1 py-2 w-full">{item}</li>)
-                
-                }
-            </ul>
-          </div>
-          )
-         }
+          {showsuggestion && (
+            <div className=" fixed top-15 sm:left-[40%] left-[60%] py-2 px-2 sm:w-[18rem] flex justify-start rounded-md bg-white mx-auto">
+              <ul className="w-full text-left">
+                {suggest.map((item, index) => (
+                  <li
+                    key={index}
+                    className="hover:bg-gray-300 m- p-1 py-2 w-full"
+                    onClick={()=>handleSearchResult(item)}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="hidden lg:flex col-span-1  ">
